@@ -1,0 +1,9 @@
+._*
+*.changes
+*.deb
+*.dsc
+*.tar.gz
+a53
+openbts
+smqueue
+subscriberRegistry
