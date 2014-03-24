@@ -26,14 +26,23 @@ sayAndDo () {
 	fi
 }
 
+usage () {
+	echo "# usage: ./switchto.sh branch-name"
+	exit 1
+}
+
+if [ -z "$1" ]; then
+	usage
+fi
+
 for component in a53 CommonLibs openbts RRLP smqueue sqlite3 subscriberRegistry
 do
 	if [ -d $component ]; then
-		echo "# pulling $component"
+		echo "########################################################################"
+		echo "# $component"
 		cd $component
-		sayAndDo git pull
-		sayAndDo git submodule update --remote
-		sayAndDo git submodule foreach --recursive 'git pull'
+		sayAndDo git checkout $1
+		sayAndDo git submodule foreach --recursive "git checkout $1"
 		cd ..
 		echo
 	fi
