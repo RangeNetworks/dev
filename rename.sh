@@ -93,6 +93,7 @@ if [ $ANSWER == "yes" ]; then
 		echo "# - pushing to origin..."
 		sayAndDo git push origin --delete $OLDNAME
 		sayAndDo git push origin $NEWNAME
+		sayAndDo git branch -D $NEWNAME
 		echo "# - restoring workspace branch..."
 		sayAndDo git checkout $BOOKMARK
 	fi

@@ -26,25 +26,19 @@ sayAndDo () {
 	fi
 }
 
-cloneOrPull () {
-	if [ ! -d $@ ]; then
-		echo "# cloning $@"
-		sayAndDo git clone --recursive git@github.com:RangeNetworks/$@.git
-		sayAndDo cd $@
-		sayAndDo git submodule foreach 'git checkout master'
-		sayAndDo cd ..
-	else
-		echo "# pulling $@"
-		sayAndDo cd $@
-		sayAndDo git pull
-		sayAndDo git submodule update --remote
-		sayAndDo git submodule foreach 'git checkout master'
-		sayAndDo git submodule foreach 'git pull'
-		sayAndDo cd ..
-	fi
-}
-
 for component in a53 CommonLibs openbts RRLP smqueue sqlite3 subscriberRegistry
 do
-	cloneOrPull $component
+	if [ ! -d $component ]; then
+		echo "# cloning $component"
+		sayAndDo git clone --recursive git@github.com:RangeNetworks/$component.git
+		cd $component
+		for remote in `git branch -r | grep -v master `
+		do
+			sayAndDo git checkout --track $remote
+		done
+		sayAndDo git checkout master
+		sayAndDo git submodule foreach 'git checkout master'
+		cd ..
+		echo
+	fi
 done
