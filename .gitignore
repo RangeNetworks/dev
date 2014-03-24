@@ -4,6 +4,9 @@
 *.dsc
 *.tar.gz
 a53
+CommonLibs
 openbts
+RRLP
 smqueue
+sqlite3
 subscriberRegistry

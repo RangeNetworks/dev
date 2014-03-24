@@ -44,7 +44,7 @@ cloneOrPull () {
 	fi
 }
 
-for component in a53 openbts smqueue subscriberRegistry
+for component in a53 CommonLibs openbts RRLP smqueue sqlite3 subscriberRegistry
 do
 	cloneOrPull $component
 done
