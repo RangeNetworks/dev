@@ -5,6 +5,7 @@
 *.tar.gz
 a53
 CommonLibs
+NodeManager
 openbts
 RRLP
 smqueue

@@ -88,12 +88,12 @@ if [ $ANSWER == "yes" ]; then
 		BOOKMARK=`git rev-parse --abbrev-ref HEAD`
 		echo "# - saving bookmark for current workspace branch..."
 		echo "# - renaming..."
-		sayAndDo git checkout -b $OLDNAME --track origin/$OLDNAME
 		sayAndDo git branch -m $OLDNAME $NEWNAME
 		echo "# - pushing to origin..."
 		sayAndDo git push origin --delete $OLDNAME
 		sayAndDo git push origin $NEWNAME
 		sayAndDo git branch -D $NEWNAME
+		sayAndDo git checkout -b $NEWNAME --track origin/$NEWNAME
 		echo "# - restoring workspace branch..."
 		sayAndDo git checkout $BOOKMARK
 	fi
