@@ -20,7 +20,7 @@
 source $(dirname $0)/common.source
 
 usage () {
-	echo "# usage: ./rename.sh component-directory (tag/branch current-tag new-tag)"
+	echo "# usage: ./delete.sh component-directory (tag/branch current-tag new-tag)"
 	exit 1
 }
 
@@ -33,9 +33,9 @@ else
 	COMPONENT=$1
 fi
 
-# Are we manipulating a tag or branch?
+# Are we deleting a tag or branch?
 if [ -z "$2" ]; then
-	read -r -p "# Do you want to rename a tag or branch? " TYPE
+	read -r -p "# Do you want to delete a tag or branch? " TYPE
 elif [ $2 == "tag" ]; then
 	TYPE="tag"
 elif [ $2 == "branch" ]; then
@@ -44,7 +44,7 @@ else
 	usage
 fi
 
-# Which one should be renamed?
+# Which one should be deleted?
 if [ -z "$3" ]; then
 	echo "# Here are the valid choices for that component:"
 	cd $COMPONENT
@@ -54,41 +54,27 @@ if [ -z "$3" ]; then
 		git branch -a
 	fi
 	cd ..
-	read -r -p "# Which $TYPE would you like to rename? " OLDNAME
+	read -r -p "# Which $TYPE would you like to delete? " NAME
 else
-	OLDNAME=$3
-fi
-
-# What should it be renamed to?
-if [ -z "$4" ]; then
-	read -r -p "# What should the new name be? " NEWNAME
-else
-	NEWNAME=$4
+	NAME=$3
 fi
 
 # Really, truly? Alrighty, execute.
-read -r -p "# To rename $TYPE $OLDNAME to $NEWNAME, answer \"yes\" " ANSWER
+read -r -p "# To delete $TYPE $NAME, answer \"yes\" " ANSWER
 if [ $ANSWER == "yes" ]; then
 	cd $COMPONENT
 	if [ $TYPE == "tag" ]; then
-		echo "# - renaming..."
-		sayAndDo git tag $NEWNAME $OLDNAME
-		sayAndDo git tag -d $OLDNAME
+		echo "# - deleting..."
+		sayAndDo git tag -d $NAME
 		echo "# - pushing to origin..."
-		sayAndDo git push origin :refs/tags/$OLDNAME
-		sayAndDo git push --tags
+		sayAndDo git push origin :refs/tags/$NAME
 	elif [ $TYPE == "branch" ]; then
-		BOOKMARK=`git rev-parse --abbrev-ref HEAD`
-		echo "# - saving bookmark for current workspace branch..."
-		echo "# - renaming..."
-		sayAndDo git branch -m $OLDNAME $NEWNAME
-		echo "# - pushing to origin..."
-		sayAndDo git push origin --delete $OLDNAME
-		sayAndDo git push origin $NEWNAME
-		sayAndDo git branch -D $NEWNAME
-		sayAndDo git checkout -b $NEWNAME --track origin/$NEWNAME
-		echo "# - restoring workspace branch..."
-		sayAndDo git checkout $BOOKMARK
+		echo "# - Sorry, branch deletes haven't been tested. Bailing."
+		exit 1
+		#echo "# - deleting..."
+		#sayAndDo git branch -d $NAME
+		#echo "# - pushing to origin..."
+		#sayAndDo git push origin :$NAME
 	fi
 else
 	echo "# - better safe than sorry, cancelling..."

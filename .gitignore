@@ -12,3 +12,7 @@ RRLP
 smqueue
 sqlite3
 subscriberRegistry
+asterisk-config
+asterisk
+libsqliteodbc
+system-config

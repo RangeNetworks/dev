@@ -17,14 +17,7 @@
 # See the COPYING file in the main directory for details.
 #
 
-sayAndDo () {
-	echo $@
-	eval $@
-	if [ $? -ne 0 ]; then
-		echo "# ERROR: command failed!"
-		exit 1
-	fi
-}
+source $(dirname $0)/common.source
 
 usage () {
 	echo "# usage: ./state.sh (branches, tags)"
@@ -41,7 +34,7 @@ else
 	usage
 fi
 
-for component in a53 CommonLibs libzmq NodeManager openbts RRLP smqueue sqlite3 subscriberRegistry
+for component in $REPOS
 do
 	if [ -d $component ]; then
 		echo "########################################################################"

@@ -17,20 +17,13 @@
 # See the COPYING file in the main directory for details.
 #
 
-sayAndDo () {
-	echo $@
-	eval $@
-	if [ $? -ne 0 ]; then
-		echo "# ERROR: command failed!"
-		exit 1
-	fi
-}
+source $(dirname $0)/common.source
 
 installIfMissing () {
 	dpkg -s $@ > /dev/null
 	if [ $? -ne 0 ]; then
 		echo "# - missing $@, installing dependency"
-		sudo apt-get install $@
+		sudo apt-get install $@ -y
 	fi
 }
 
