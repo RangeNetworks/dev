@@ -26,12 +26,13 @@ sayAndDo () {
 }
 
 REPOS="\
-	a53 \
 	asterisk \
 	asterisk-config \
 	CommonLibs \
+	liba53 \
 	libsqliteodbc \
-	libzmq NodeManager \
+	libzmq \
+	NodeManager \
 	openbts \
 	RRLP \
 	smqueue \

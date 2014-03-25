@@ -3,7 +3,7 @@
 *.deb
 *.dsc
 *.tar.gz
-a53
+liba53
 CommonLibs
 NodeManager
 openbts

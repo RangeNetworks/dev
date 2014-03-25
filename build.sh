@@ -91,11 +91,12 @@ sayAndDo sudo dpkg -i $BUILDNAME/range-libsqliteodbc_*.deb
 echo "# - done"
 echo
 
-echo "# a53 - building and installing as dependency"
-sayAndDo cd a53
-sayAndDo make
-sayAndDo sudo make install
+echo "# liba53 - building Debian and installing as dependency"
+sayAndDo cd liba53
+sayAndDo dpkg-buildpackage
 sayAndDo cd ..
+sayAndDo mv liba53_* $BUILDNAME
+sayAndDo sudo dpkg -i $BUILDNAME/liba53_*.deb
 echo "# - done"
 echo
 
