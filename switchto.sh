@@ -35,7 +35,7 @@ if [ -z "$1" ]; then
 	usage
 fi
 
-for component in a53 CommonLibs NodeManager openbts RRLP smqueue sqlite3 subscriberRegistry
+for component in a53 CommonLibs libzmq NodeManager openbts RRLP smqueue sqlite3 subscriberRegistry
 do
 	if [ -d $component ]; then
 		echo "########################################################################"

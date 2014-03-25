@@ -77,6 +77,14 @@ sayAndDo cd ..
 echo "# - done"
 echo "#"
 
+echo "# libzmq - building and installing as dependency"
+sayAndDo cd libzmq
+sayAndDo ./build.sh
+sayAndDo sudo dpkg -i *.deb
+sayAndDo cd ..
+echo "# - done"
+echo "#"
+
 echo "# subscriberRegistry - building Debian package"
 sayAndDo cd subscriberRegistry
 sayAndDo dpkg-buildpackage

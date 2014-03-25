@@ -7,6 +7,7 @@ a53
 CommonLibs
 NodeManager
 openbts
+libzmq
 RRLP
 smqueue
 sqlite3
