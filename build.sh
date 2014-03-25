@@ -59,8 +59,37 @@ installIfMissing libreadline-dev
 installIfMissing libncurses5
 installIfMissing libncurses5-dev
 installIfMissing pkg-config
+# libsqliteodbc deps
+installIfMissing cdbs
+installIfMissing libsqlite0-dev
+# asterisk deps
+installIfMissing unixodbc
+installIfMissing unixodbc-dev
+installIfMissing libssl-dev
 echo "# - done"
-echo "#"
+echo
+
+BUILDNAME="BUILD-`date +"%Y-%m-%d--%H-%M-%S"`"
+echo "# make a home for this build"
+sayAndDo mkdir $BUILDNAME
+
+echo "# libsqliteodbc - building Debian package and installing as dependency"
+sayAndDo cd libsqliteodbc
+sayAndDo ./build.sh
+sayAndDo mv range-libsqliteodbc_* ../$BUILDNAME
+sayAndDo cd ..
+sayAndDo sudo dpkg -i $BUILDNAME/range-libsqliteodbc_*.deb
+echo "# - done"
+echo
+
+echo "# libzmq - building Debian package and installing as dependency"
+sayAndDo cd libzmq
+sayAndDo ./build.sh
+sayAndDo mv range-libzmq_* ../$BUILDNAME
+sayAndDo cd ..
+sayAndDo sudo dpkg -i $BUILDNAME/range-libsqliteodbc_*.deb
+echo "# - done"
+echo
 
 echo "# a53 - building and installing as dependency"
 sayAndDo cd a53
@@ -68,33 +97,53 @@ sayAndDo make
 sayAndDo sudo make install
 sayAndDo cd ..
 echo "# - done"
-echo "#"
+echo
 
-echo "# libzmq - building and installing as dependency"
-sayAndDo cd libzmq
-sayAndDo ./build.sh
-sayAndDo sudo dpkg -i *.deb
-sayAndDo cd ..
-echo "# - done"
-echo "#"
-
-echo "# subscriberRegistry - building Debian package"
+echo "# subscriberRegistry - building"
 sayAndDo cd subscriberRegistry
 sayAndDo dpkg-buildpackage
 sayAndDo cd ..
+sayAndDo mv sipauthserve_* $BUILDNAME
 echo "# - done"
-echo "#"
+echo
 
 echo "# smqueue - building Debian package"
 sayAndDo cd smqueue
 sayAndDo dpkg-buildpackage
 sayAndDo cd ..
+sayAndDo mv smqueue_* $BUILDNAME
 echo "# - done"
-echo "#"
+echo
 
 echo "# openbts - building Debian package"
 sayAndDo cd openbts
 sayAndDo dpkg-buildpackage
 sayAndDo cd ..
+sayAndDo mv openbts_* $BUILDNAME
 echo "# - done"
-echo "#"
+echo
+
+echo "# asterisk - building Debian package"
+sayAndDo cd asterisk
+rm -rf range-asterisk* asterisk-*
+sayAndDo ./build.sh
+sayAndDo mv range-asterisk_* ../$BUILDNAME
+sayAndDo cd ..
+echo "# - done"
+echo
+
+echo "# asterisk-config - building Debian package"
+sayAndDo cd asterisk-config
+sayAndDo dpkg-buildpackage
+sayAndDo cd ..
+sayAndDo mv range-asterisk-config_* $BUILDNAME
+echo "# - done"
+echo
+
+echo "# system-config - building Debian package"
+sayAndDo cd system-config
+sayAndDo dpkg-buildpackage
+sayAndDo cd ..
+sayAndDo mv range-configs_* $BUILDNAME
+echo "# - done"
+echo
