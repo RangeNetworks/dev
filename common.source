@@ -34,7 +34,6 @@ REPOS="\
 	libzmq \
 	NodeManager \
 	openbts \
-	RRLP \
 	smqueue \
 	sqlite3 \
 	subscriberRegistry \
