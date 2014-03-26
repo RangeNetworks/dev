@@ -20,7 +20,7 @@
 source $(dirname $0)/common.source
 
 usage () {
-	echo "# usage: ./rename.sh component-directory (tag/branch current-tag new-tag)"
+	echo "# usage: ./rename.sh component-directory (tag/branch current-name new-name)"
 	exit 1
 }
 

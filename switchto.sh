@@ -20,7 +20,7 @@
 source $(dirname $0)/common.source
 
 usage () {
-	echo "# usage: ./switchto.sh branch-name"
+	echo "# usage: ./switchto.sh branch-or-tag-name"
 	exit 1
 }
 
@@ -35,7 +35,7 @@ do
 		echo "# $component"
 		cd $component
 		sayAndDo git checkout $1
-		sayAndDo git submodule foreach --recursive "git checkout $1"
+		sayAndDo git submodule update --recursive
 		cd ..
 		echo
 	fi

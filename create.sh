@@ -20,7 +20,7 @@
 source $(dirname $0)/common.source
 
 usage () {
-	echo "# usage: ./delete.sh component-directory (tag/branch name)"
+	echo "# usage: ./create.sh component-directory (tag/branch name)"
 	exit 1
 }
 
@@ -33,9 +33,9 @@ else
 	COMPONENT=$1
 fi
 
-# Are we deleting a tag or branch?
+# Are we adding a creating or branch?
 if [ -z "$2" ]; then
-	read -r -p "# Do you want to delete a tag or branch? " TYPE
+	read -r -p "# Do you want to create a tag or branch? " TYPE
 elif [ $2 == "tag" ]; then
 	TYPE="tag"
 elif [ $2 == "branch" ]; then
@@ -44,37 +44,25 @@ else
 	usage
 fi
 
-# Which one should be deleted?
+# Which one should be created?
 if [ -z "$3" ]; then
-	echo "# Here are the valid choices for that component:"
-	cd $COMPONENT
-	if [ $TYPE == "tag" ]; then
-		git tag
-	elif [ $TYPE == "branch" ]; then
-		git branch -a
-	fi
-	cd ..
-	read -r -p "# Which $TYPE would you like to delete? " NAME
+	read -r -p "# What new $TYPE would you like to create? " NAME
 else
 	NAME=$3
 fi
 
 # Really, truly? Alrighty, execute.
-read -r -p "# To delete $TYPE $NAME, answer \"yes\" " ANSWER
+read -r -p "# To create a new $TYPE named $NAME, answer \"yes\" " ANSWER
 if [ $ANSWER == "yes" ]; then
 	cd $COMPONENT
 	if [ $TYPE == "tag" ]; then
-		echo "# - deleting..."
-		sayAndDo git tag -d $NAME
-		echo "# - pushing to origin..."
-		sayAndDo git push origin :refs/tags/$NAME
-	elif [ $TYPE == "branch" ]; then
-		echo "# - Sorry, branch deletes haven't been tested. Bailing."
+		echo "# Sorry, tag creations haven't been implemented. Bailing."
 		exit 1
-		#echo "# - deleting..."
-		#sayAndDo git branch -d $NAME
-		#echo "# - pushing to origin..."
-		#sayAndDo git push origin :$NAME
+	elif [ $TYPE == "branch" ]; then
+		echo "# - creating..."
+		sayAndDo git checkout -b $NAME
+		echo "# - pushing to origin..."
+		sayAndDo git push -u origin $NAME
 	fi
 else
 	echo "# - better safe than sorry, cancelling..."

@@ -30,7 +30,8 @@ do
 			sayAndDo git checkout --track $remote
 		done
 		sayAndDo git checkout master
-		sayAndDo git submodule foreach 'git checkout master'
+		sayAndDo git submodule init
+		sayAndDo git submodule update --init --recursive
 		cd ..
 		echo
 	fi

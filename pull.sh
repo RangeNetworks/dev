@@ -25,8 +25,7 @@ do
 		echo "# pulling $component"
 		cd $component
 		sayAndDo git pull
-		sayAndDo git submodule update --remote
-		sayAndDo git submodule foreach --recursive 'git pull'
+		sayAndDo git submodule update --recursive
 		cd ..
 		echo
 	fi
