@@ -9,8 +9,11 @@ If there's a task that annoys you when working with the code, open an issue to s
 
 | Component     | master status |
 |---------------|:-------------:|
+| asterisk         | [![Build Status](https://travis-ci.org/RangeNetworks/asterisk.svg?branch=master)](https://travis-ci.org/RangeNetworks/asterisk) |
+| asterisk-config         | [![Build Status](https://travis-ci.org/RangeNetworks/asterisk-config.svg?branch=master)](https://travis-ci.org/RangeNetworks/asterisk-config) |
 | liba53        | [![Build Status](https://travis-ci.org/RangeNetworks/liba53.svg?branch=master)](https://travis-ci.org/RangeNetworks/liba53) |
 | libsqliteodbc | [![Build Status](https://travis-ci.org/RangeNetworks/libsqliteodbc.svg?branch=master)](https://travis-ci.org/RangeNetworks/libsqliteodbc) |
-|libzmq         | [![Build Status](https://travis-ci.org/RangeNetworks/libzmq.svg?branch=master)](https://travis-ci.org/RangeNetworks/libzmq) |
+| libzmq         | [![Build Status](https://travis-ci.org/RangeNetworks/libzmq.svg?branch=master)](https://travis-ci.org/RangeNetworks/libzmq) |
+| system-config         | [![Build Status](https://travis-ci.org/RangeNetworks/system-config.svg?branch=master)](https://travis-ci.org/RangeNetworks/system-config) |
 
 ### &#10143; [Get Started Here](https://github.com/RangeNetworks/dev/wiki)
