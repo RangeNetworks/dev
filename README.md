@@ -9,7 +9,6 @@ If there's a task that annoys you when working with the code, open an issue to s
 
 | Component     | master status |
 |---------------|:-------------:|
-| asterisk         | [![Build Status](https://travis-ci.org/RangeNetworks/asterisk.svg?branch=master)](https://travis-ci.org/RangeNetworks/asterisk) |
 | asterisk-config         | [![Build Status](https://travis-ci.org/RangeNetworks/asterisk-config.svg?branch=master)](https://travis-ci.org/RangeNetworks/asterisk-config) |
 | liba53        | [![Build Status](https://travis-ci.org/RangeNetworks/liba53.svg?branch=master)](https://travis-ci.org/RangeNetworks/liba53) |
 | libsqliteodbc | [![Build Status](https://travis-ci.org/RangeNetworks/libsqliteodbc.svg?branch=master)](https://travis-ci.org/RangeNetworks/libsqliteodbc) |
