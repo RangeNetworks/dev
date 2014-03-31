@@ -16,3 +16,4 @@ asterisk-config
 asterisk
 libsqliteodbc
 system-config
+libcoredumper

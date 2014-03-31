@@ -73,6 +73,15 @@ BUILDNAME="BUILD-`date +"%Y-%m-%d--%H-%M-%S"`"
 echo "# make a home for this build"
 sayAndDo mkdir $BUILDNAME
 
+echo "# libcoredumper - building Debian package and installing as dependency"
+sayAndDo cd libcoredumper
+sayAndDo ./build.sh
+sayAndDo mv libcoredumper* ../$BUILDNAME
+sayAndDo cd ..
+sayAndDo sudo dpkg -i $BUILDNAME/libcoredumper*.deb
+echo "# - done"
+echo
+
 echo "# libsqliteodbc - building Debian package and installing as dependency"
 sayAndDo cd libsqliteodbc
 sayAndDo ./build.sh
