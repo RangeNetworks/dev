@@ -14,6 +14,7 @@ If there's a task that annoys you when working with the code, open an issue to s
 | asterisk | [![Build Status](https://travis-ci.org/RangeNetworks/asterisk.svg?branch=master)](https://travis-ci.org/RangeNetworks/asterisk) |
 | asterisk-config | [![Build Status](https://travis-ci.org/RangeNetworks/asterisk-config.svg?branch=master)](https://travis-ci.org/RangeNetworks/asterisk-config) |
 | liba53 | [![Build Status](https://travis-ci.org/RangeNetworks/liba53.svg?branch=master)](https://travis-ci.org/RangeNetworks/liba53) |
+| libcoredumper | [![Build Status](https://travis-ci.org/RangeNetworks/libcoredumper.svg?branch=master)](https://travis-ci.org/RangeNetworks/libcoredumper) |
 | libsqliteodbc | [![Build Status](https://travis-ci.org/RangeNetworks/libsqliteodbc.svg?branch=master)](https://travis-ci.org/RangeNetworks/libsqliteodbc) |
 | libzmq | [![Build Status](https://travis-ci.org/RangeNetworks/libzmq.svg?branch=master)](https://travis-ci.org/RangeNetworks/libzmq) |
 | openbts | [![Build Status](https://travis-ci.org/RangeNetworks/openbts.svg?branch=master)](https://travis-ci.org/RangeNetworks/openbts) |
