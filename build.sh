@@ -102,7 +102,7 @@ echo
 
 echo "# liba53 - building Debian and installing as dependency"
 sayAndDo cd liba53
-sayAndDo dpkg-buildpackage
+sayAndDo dpkg-buildpackage -us -uc
 sayAndDo cd ..
 sayAndDo mv liba53_* $BUILDNAME
 sayAndDo sudo dpkg -i $BUILDNAME/liba53_*.deb
@@ -111,7 +111,7 @@ echo
 
 echo "# subscriberRegistry - building"
 sayAndDo cd subscriberRegistry
-sayAndDo dpkg-buildpackage
+sayAndDo dpkg-buildpackage -us -uc
 sayAndDo cd ..
 sayAndDo mv sipauthserve_* $BUILDNAME
 echo "# - done"
@@ -119,7 +119,7 @@ echo
 
 echo "# smqueue - building Debian package"
 sayAndDo cd smqueue
-sayAndDo dpkg-buildpackage
+sayAndDo dpkg-buildpackage -us -uc
 sayAndDo cd ..
 sayAndDo mv smqueue_* $BUILDNAME
 echo "# - done"
@@ -127,7 +127,7 @@ echo
 
 echo "# openbts - building Debian package"
 sayAndDo cd openbts
-sayAndDo dpkg-buildpackage
+sayAndDo dpkg-buildpackage -us -uc
 sayAndDo cd ..
 sayAndDo mv openbts_* $BUILDNAME
 echo "# - done"
@@ -144,7 +144,7 @@ echo
 
 echo "# asterisk-config - building Debian package"
 sayAndDo cd asterisk-config
-sayAndDo dpkg-buildpackage
+sayAndDo dpkg-buildpackage -us -uc
 sayAndDo cd ..
 sayAndDo mv range-asterisk-config_* $BUILDNAME
 echo "# - done"
@@ -152,7 +152,7 @@ echo
 
 echo "# system-config - building Debian package"
 sayAndDo cd system-config
-sayAndDo dpkg-buildpackage
+sayAndDo dpkg-buildpackage -us -uc
 sayAndDo cd ..
 sayAndDo mv range-configs_* $BUILDNAME
 echo "# - done"
