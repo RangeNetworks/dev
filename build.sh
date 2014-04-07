@@ -66,6 +66,8 @@ installIfMissing libsqlite0-dev
 installIfMissing unixodbc
 installIfMissing unixodbc-dev
 installIfMissing libssl-dev
+installIfMissing libsrtp0
+installIfMissing libsrtp0-dev
 echo "# - done"
 echo
 
