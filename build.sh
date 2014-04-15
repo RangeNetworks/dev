@@ -98,7 +98,7 @@ sayAndDo cd libzmq
 sayAndDo ./build.sh
 sayAndDo mv range-libzmq_* ../$BUILDNAME
 sayAndDo cd ..
-sayAndDo sudo dpkg -i $BUILDNAME/range-libsqliteodbc_*.deb
+sayAndDo sudo dpkg -i $BUILDNAME/range-libzymq_*.deb
 echo "# - done"
 echo
 
