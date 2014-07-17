@@ -43,6 +43,24 @@ else
 fi
 echo "#"
 
+echo "# adding additional repo tools"
+installIfMissing software-properties-common
+installIfMissing python-software-properties
+echo "# - done"
+echo
+
+if ! stat -t /etc/apt/sources.list.d/*zeromq* >/dev/null 2>&1
+then
+	echo "# adding modern zeromq repository"
+	sudo add-apt-repository -y ppa:chris-lea/zeromq
+	echo "# - done"
+	echo
+	echo "# updating repositories"
+	sudo apt-get update
+	echo "# - done"
+	echo
+fi
+
 echo "# checking build dependencies"
 installIfMissing autoconf
 installIfMissing automake
@@ -68,6 +86,11 @@ installIfMissing unixodbc-dev
 installIfMissing libssl-dev
 installIfMissing libsrtp0
 installIfMissing libsrtp0-dev
+installIfMissing libsqliteodbc
+# modern zmq
+installIfMissing libzmq3-dev
+installIfMissing libzmq3
+installIfMissing python-zmq
 echo "# - done"
 echo
 
@@ -81,24 +104,6 @@ sayAndDo ./build.sh
 sayAndDo mv libcoredumper* ../$BUILDNAME
 sayAndDo cd ..
 sayAndDo sudo dpkg -i $BUILDNAME/libcoredumper*.deb
-echo "# - done"
-echo
-
-echo "# libsqliteodbc - building Debian package and installing as dependency"
-sayAndDo cd libsqliteodbc
-sayAndDo ./build.sh
-sayAndDo mv range-libsqliteodbc_* ../$BUILDNAME
-sayAndDo cd ..
-sayAndDo sudo dpkg -i $BUILDNAME/range-libsqliteodbc_*.deb
-echo "# - done"
-echo
-
-echo "# libzmq - building Debian package and installing as dependency"
-sayAndDo cd libzmq
-sayAndDo ./build.sh
-sayAndDo mv range-libzmq_* ../$BUILDNAME
-sayAndDo cd ..
-sayAndDo sudo dpkg -i $BUILDNAME/range-libzmq_*.deb
 echo "# - done"
 echo
 
