@@ -31,12 +31,9 @@ REPOS="\
 	CommonLibs \
 	liba53 \
 	libcoredumper \
-	libsqliteodbc \
-	libzmq \
 	NodeManager \
 	openbts \
 	smqueue \
-	sqlite3 \
 	subscriberRegistry \
 	system-config \
 	"
