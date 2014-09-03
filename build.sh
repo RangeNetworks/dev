@@ -19,6 +19,13 @@
 
 source $(dirname $0)/common.source
 
+usage () {
+	echo "# usage: ./build.sh.sh radio-type (component-name)"
+	echo "# valid radio types are: SDR1, USRP1, B100, B110, N200, N210"
+	echo "# (optional) valid component names are: libcoredumper, liba53, subscriberRegistry, smqueue, openbts, asterisk, asterisk-config, system-config"
+	exit 1
+}
+
 installIfMissing () {
 	dpkg -s $@ > /dev/null
 	if [ $? -ne 0 ]; then
@@ -27,6 +34,45 @@ installIfMissing () {
 	fi
 }
 
+RADIO=$1
+MANUFACTURER=""
+echo "# checking for a supported radio type"
+if [ -z "$RADIO" ]; then
+	echo "# - ERROR : radio type must be specified"
+	usage
+elif [ "$RADIO" == "SDR1" ] || [ "$RADIO" == "RAD1" ]; then
+	RADIO="SDR1"
+	MANUFACTURER="Range"
+	EXTRA_CONFIGURE_FLAGS=""
+elif [ "$RADIO" == "USRP1" ]; then
+	MANUFACTURER="Ettus"
+	EXTRA_CONFIGURE_FLAGS="--with-usrp1"
+elif [ "$RADIO" == "B100" ] || [ "$RADIO" == "B110" ] || [ "$RADIO" == "N200" ] || [ "$RADIO" == "N210" ]; then
+	MANUFACTURER="Ettus"
+	EXTRA_CONFIGURE_FLAGS="--with-uhd"
+fi
+export EXTRA_CONFIGURE_FLAGS
+
+if [ -z "$MANUFACTURER" ]; then
+	echo "# - ERROR : invalid radio target ($RADIO)"
+	usage
+else
+	echo "# - found"
+fi
+
+COMPONENT="all"
+if [ ! -z "$2" ]; then
+	COMPONENT="$2"
+	echo "# single component specified"
+	if [ "$COMPONENT" == "libcoredumper" ] || [ "$COMPONENT" == "liba53" ]; then
+		echo "# - found, building and installing $COMPONENT"
+	elif [ "$COMPONENT" == "subscriberRegistry" ] || [ "$COMPONENT" == "smqueue" ] || [ "$COMPONENT" == "openbts" ] || [ "$COMPONENT" == "asterisk" ] || [ "$COMPONENT" == "asterisk-config" ] || [ "$COMPONENT" == "system-config" ]; then
+		echo "# - found, building $COMPONENT"
+	else
+		echo "# - ERROR : invalid component ($COMPONENT)"
+		usage
+	fi
+fi
 
 echo "# checking for a compatible build host"
 if hash lsb_release 2>/dev/null; then
@@ -61,6 +107,20 @@ then
 	echo
 fi
 
+if [ "$MANUFACTURER" == "Ettus" ]; then
+	if ! stat -t /etc/apt/sources.list.d/*ettus* >/dev/null 2>&1
+	then
+		echo "# adding ettus repository"
+		sudo bash -c 'echo "deb http://files.ettus.com/binaries/uhd_stable/repo/uhd/ubuntu/`lsb_release -cs` `lsb_release -cs` main" > /etc/apt/sources.list.d/ettus.list'
+		echo "# - done"
+		echo
+		echo "# updating repositories"
+		sudo apt-get update
+		echo "# - done"
+		echo
+	fi
+fi
+
 echo "# checking build dependencies"
 installIfMissing autoconf
 installIfMissing automake
@@ -91,76 +151,96 @@ installIfMissing libsqliteodbc
 installIfMissing libzmq3-dev
 installIfMissing libzmq3
 installIfMissing python-zmq
+if [ "$MANUFACTURER" == "Ettus" ]; then
+	#sudo apt-get install -t `lsb_release -cs` uhd
+	installIfMissing uhd
+fi
 echo "# - done"
 echo
 
-BUILDNAME="BUILD-`date +"%Y-%m-%d--%H-%M-%S"`"
+BUILDNAME="BUILDS/`date +"%Y-%m-%d--%H-%M-%S"`"
 echo "# make a home for this build"
-sayAndDo mkdir $BUILDNAME
+sayAndDo mkdir -p $BUILDNAME
 
-echo "# libcoredumper - building Debian package and installing as dependency"
-sayAndDo cd libcoredumper
-sayAndDo ./build.sh
-sayAndDo mv libcoredumper* ../$BUILDNAME
-sayAndDo cd ..
-sayAndDo sudo dpkg -i $BUILDNAME/libcoredumper*.deb
-echo "# - done"
-echo
+if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "libcoredumper" ]; then
+	echo "# libcoredumper - building Debian package and installing as dependency"
+	sayAndDo cd libcoredumper
+	sayAndDo ./build.sh
+	sayAndDo mv libcoredumper* ../$BUILDNAME
+	sayAndDo cd ..
+	sayAndDo sudo dpkg -i $BUILDNAME/libcoredumper*.deb
+	echo "# - done"
+	echo
+fi
 
-echo "# liba53 - building Debian and installing as dependency"
-sayAndDo cd liba53
-sayAndDo dpkg-buildpackage -us -uc
-sayAndDo cd ..
-sayAndDo mv liba53_* $BUILDNAME
-sayAndDo sudo dpkg -i $BUILDNAME/liba53_*.deb
-echo "# - done"
-echo
+if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "liba53" ]; then
+	echo "# liba53 - building Debian and installing as dependency"
+	sayAndDo cd liba53
+	sayAndDo dpkg-buildpackage -us -uc
+	sayAndDo cd ..
+	sayAndDo mv liba53_* $BUILDNAME
+	sayAndDo sudo dpkg -i $BUILDNAME/liba53_*.deb
+	echo "# - done"
+	echo
+fi
 
-echo "# subscriberRegistry - building"
-sayAndDo cd subscriberRegistry
-sayAndDo dpkg-buildpackage -us -uc
-sayAndDo cd ..
-sayAndDo mv sipauthserve_* $BUILDNAME
-echo "# - done"
-echo
+if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "subscriberRegistry" ]; then
+	echo "# subscriberRegistry - building Debian package"
+	sayAndDo cd subscriberRegistry
+	sayAndDo dpkg-buildpackage -us -uc
+	sayAndDo cd ..
+	sayAndDo mv sipauthserve_* $BUILDNAME
+	echo "# - done"
+	echo
+fi
 
-echo "# smqueue - building Debian package"
-sayAndDo cd smqueue
-sayAndDo dpkg-buildpackage -us -uc
-sayAndDo cd ..
-sayAndDo mv smqueue_* $BUILDNAME
-echo "# - done"
-echo
+if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "smqueue" ]; then
+	echo "# smqueue - building Debian package"
+	sayAndDo cd smqueue
+	sayAndDo dpkg-buildpackage -us -uc
+	sayAndDo cd ..
+	sayAndDo mv smqueue_* $BUILDNAME
+	echo "# - done"
+	echo
+fi
 
-echo "# openbts - building Debian package"
-sayAndDo cd openbts
-sayAndDo dpkg-buildpackage -us -uc
-sayAndDo cd ..
-sayAndDo mv openbts_* $BUILDNAME
-echo "# - done"
-echo
+if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "openbts" ]; then
+	echo "# openbts - building Debian package"
+	sayAndDo cd openbts
+	sayAndDo dpkg-buildpackage -us -uc
+	sayAndDo cd ..
+	sayAndDo mv openbts_* $BUILDNAME
+	echo "# - done"
+	echo
+fi
 
-echo "# asterisk - building Debian package"
-sayAndDo cd asterisk
-rm -rf range-asterisk* asterisk-*
-sayAndDo ./build.sh
-sayAndDo mv range-asterisk_* ../$BUILDNAME
-sayAndDo cd ..
-echo "# - done"
-echo
+if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "asterisk" ]; then
+	echo "# asterisk - building Debian package"
+	sayAndDo cd asterisk
+	rm -rf range-asterisk* asterisk-*
+	sayAndDo ./build.sh
+	sayAndDo mv range-asterisk_* ../$BUILDNAME
+	sayAndDo cd ..
+	echo "# - done"
+	echo
+fi
 
-echo "# asterisk-config - building Debian package"
-sayAndDo cd asterisk-config
-sayAndDo dpkg-buildpackage -us -uc
-sayAndDo cd ..
-sayAndDo mv range-asterisk-config_* $BUILDNAME
-echo "# - done"
-echo
+if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "asterisk-config" ]; then
+	echo "# asterisk-config - building Debian package"
+	sayAndDo cd asterisk-config
+	sayAndDo dpkg-buildpackage -us -uc
+	sayAndDo cd ..
+	sayAndDo mv range-asterisk-config_* $BUILDNAME
+	echo "# - done"
+	echo
+fi
 
-echo "# system-config - building Debian package"
-sayAndDo cd system-config
-sayAndDo dpkg-buildpackage -us -uc
-sayAndDo cd ..
-sayAndDo mv range-configs_* $BUILDNAME
-echo "# - done"
-echo
+if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "system-config" ]; then
+	echo "# system-config - building Debian package"
+	sayAndDo cd system-config
+	sayAndDo dpkg-buildpackage -us -uc
+	sayAndDo cd ..
+	sayAndDo mv range-configs_* $BUILDNAME
+	echo "# - done"
+	echo
+fi
