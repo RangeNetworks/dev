@@ -35,6 +35,7 @@ do
 		echo "# $component"
 		cd $component
 		git checkout $1
+		git submodule init
 		git submodule update --recursive
 		git submodule foreach 'git checkout `git config -f $toplevel/.gitmodules submodule.$name.branch`'	
 		cd ..
