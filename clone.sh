@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2014 Range Networks, Inc.
+# Copyright 2014-2015 Range Networks, Inc.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -23,7 +23,7 @@ for component in $REPOS
 do
 	if [ ! -d $component ]; then
 		echo "# cloning $component"
-		sayAndDo git clone git@github.com:RangeNetworks/$component.git
+		sayAndDo git clone https://github.com/RangeNetworks/$component.git
 		cd $component
 		for remote in `git branch -r | grep -v master `
 		do
