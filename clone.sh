@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2014-2015 Range Networks, Inc.
+# Copyright 2014-2016 Range Networks, Inc.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -31,8 +31,6 @@ do
 		done
 		sayAndDo git checkout master
 		sayAndDo git submodule update --init --recursive --remote
-		# sayAndDo doesn't like this string at all, can't seem to get the quoting right
-		git submodule foreach 'git checkout `git config -f $toplevel/.gitmodules submodule.$name.branch`'
 		cd ..
 		echo
 	fi

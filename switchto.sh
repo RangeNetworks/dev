@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2014 Range Networks, Inc.
+# Copyright 2014-2016 Range Networks, Inc.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -37,7 +37,6 @@ do
 		git checkout $1
 		git submodule init
 		git submodule update --recursive
-		git submodule foreach 'git checkout `git config -f $toplevel/.gitmodules submodule.$name.branch`'	
 		cd ..
 		echo
 	fi
