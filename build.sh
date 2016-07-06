@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2014-2016 Range Networks, Inc.
+# Copyright 2014 Range Networks, Inc.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -31,10 +31,6 @@ installIfMissing () {
 	if [ $? -ne 0 ]; then
 		echo "# - missing $@, installing dependency"
 		sudo apt-get install $@ -y
-		if [ $? -ne 0 ]; then
-			echo "# - ERROR : $@ package was unable to be installed"
-			exit 1
-		fi
 	fi
 }
 
@@ -99,6 +95,32 @@ installIfMissing python-software-properties
 echo "# - done"
 echo
 
+if ! stat -t /etc/apt/sources.list.d/*zeromq* >/dev/null 2>&1
+then
+	echo "# adding modern zeromq repository"
+	sudo add-apt-repository -y ppa:chris-lea/zeromq
+	echo "# - done"
+	echo
+	echo "# updating repositories"
+	sudo apt-get update
+	echo "# - done"
+	echo
+fi
+
+if [ "$MANUFACTURER" == "Ettus" ]; then
+	if ! stat -t /etc/apt/sources.list.d/*ettus* >/dev/null 2>&1
+	then
+		echo "# adding ettus repository"
+		sudo bash -c 'echo "deb http://files.ettus.com/binaries/uhd_stable/repo/uhd/ubuntu/`lsb_release -cs` `lsb_release -cs` main" > /etc/apt/sources.list.d/ettus.list'
+		echo "# - done"
+		echo
+		echo "# updating repositories"
+		sudo apt-get update
+		echo "# - done"
+		echo
+	fi
+fi
+
 echo "# checking build dependencies"
 installIfMissing autoconf
 installIfMissing automake
@@ -109,7 +131,7 @@ installIfMissing libsqlite3-dev
 installIfMissing libusb-1.0-0
 installIfMissing libusb-1.0-0-dev
 installIfMissing libortp-dev
-installIfMissing libortp9
+installIfMissing libortp8
 installIfMissing libosip2-dev
 installIfMissing libreadline-dev
 installIfMissing libncurses5
@@ -125,17 +147,13 @@ installIfMissing libssl-dev
 installIfMissing libsrtp0
 installIfMissing libsrtp0-dev
 installIfMissing libsqliteodbc
-installIfMissing uuid-dev
-installIfMissing libjansson-dev
-installIfMissing libxml2-dev
-# zmq
+# modern zmq
 installIfMissing libzmq3-dev
-installIfMissing libzmq5
+installIfMissing libzmq3
 installIfMissing python-zmq
 if [ "$MANUFACTURER" == "Ettus" ]; then
-	installIfMissing libuhd-dev
-	installIfMissing libuhd003
-	installIfMissing uhd-host
+	#sudo apt-get install -t `lsb_release -cs` uhd
+	installIfMissing uhd
 fi
 echo "# - done"
 echo
@@ -156,7 +174,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "libcoredumper" ]; then
 fi
 
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "liba53" ]; then
-	echo "# liba53 - building Debian package and installing as dependency"
+	echo "# liba53 - building Debian and installing as dependency"
 	sayAndDo cd liba53
 	sayAndDo dpkg-buildpackage -us -uc
 	sayAndDo cd ..
