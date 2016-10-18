@@ -81,10 +81,10 @@ fi
 echo "# checking for a compatible build host"
 if hash lsb_release 2>/dev/null; then
 	ubuntu=`lsb_release -r -s`
-	if [ $ubuntu != "12.04" ]; then
-		echo "# - WARNING : dev-tools is currently only tested on Ubuntu 12.04, YMMV. Please open an issue if you've used it successfully on another version of Ubuntu."
+	if [ $ubuntu != "16.04" ]; then
+		echo "# - WARNING : dev-tools is currently only tested on Ubuntu 16.04, YMMV. Please open an issue if you've used it successfully on another version of Ubuntu."
 	else
-		echo "# - fully supported host detected: Ubuntu 12.04"
+		echo "# - fully supported host detected: Ubuntu 16.04"
 	fi
 else
 	echo "# - ERROR : Sorry, dev-tools currently only supports Ubuntu as the host OS. Please open an issue for your desired host."
