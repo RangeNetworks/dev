@@ -1,0 +1,16 @@
+[Unit]
+Description=Asterisk PBX for OpenBTS
+After=network.target
+Documentation=man:asterisk(8)
+
+[Service]
+Type=simple
+Environment=statedir=/var/run/asterisk
+Environment=LC_ALL=C
+ExecStartPre=/bin/mkdir -p ${statedir}
+ExecStart=/usr/sbin/asterisk -f -g
+ExecStop=/usr/sbin/asterisk -rx 'core stop now'
+ExecReload=/usr/sbin/asterisk -rx 'core reload'
+
+[Install]
+WantedBy=multi-user.target

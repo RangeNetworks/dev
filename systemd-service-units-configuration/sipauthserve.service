@@ -1,0 +1,9 @@
+[Unit]
+Description=OpenBTS SIP Authorization Service
+
+[Service]
+Type=simple
+ExecStart=/OpenBTS/sipauthserve
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+[Unit]
+Description=OpenBTS Store-and-Forward Short Message Service
+
+[Service]
+Type=simple
+ExecStart=/OpenBTS/smqueue
+
+[Install]
+WantedBy=multi-user.target
