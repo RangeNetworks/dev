@@ -12,7 +12,7 @@ usage () {
 }
 
 if [ "$EUID" -ne 0 ]
-  then echo "# - $(whoami) please run me as root"
+  then echo "# - $(whoami) please run ${0}(me) as root"
   # sudo $0 $SDR
   exit 1
 fi
